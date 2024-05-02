@@ -14,7 +14,7 @@ Script description here.
 Available options:
 
 -h, --help      Print this help and exit
--v, --verbose   Print script debug info
+-v, --video     Play video
 -p, --playlist  Some param description
 -s, --search    Search youtube for string and play
 EOF
@@ -83,16 +83,19 @@ setup_colors
 
 # If we have just a search then go the search and play
 if [[ ! -z "${search}" ]]; then
-    mpv --no-audio-display --ytdl-format=bestaudio "ytdl://ytsearch:${search}"
+    echo "Playing based on search..."
+    mpv --sub=no --audio-channels=stereo --audio-samplerate=48000 --no-audio-display --ytdl-format=bestaudio "ytdl://ytsearch:${search}"
 fi
 
 # If we have video, and the playlist param is not empty then play the playlist with video
 if [[ "$VIDEO" = true ]] && [[ ! -z "$param" ]]; then
-    mpv --ytdl-raw-options="yes-playlist=" ${param}
+    echo "Playing Audio and Video..."
+    mpv --audio-channels=stereo --audio-samplerate=48000 --ytdl-raw-options="yes-playlist=" ${param}
 fi
 
 if [[ "$VIDEO" = false ]] && [[ ! -z "$param" ]]; then
-    mpv --no-audio-display --ytdl-format=bestaudio --ytdl-raw-options="yes-playlist=" ${param}
+    echo "Playing Audio only..."
+    mpv --sub=no --audio-channels=stereo --audio-samplerate=48000 --no-audio-display --ytdl-format=bestaudio --ytdl-raw-options="yes-playlist=" ${param}
 fi
 
 msg "- Invalid or no options set"
